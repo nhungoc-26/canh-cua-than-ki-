@@ -1,0 +1,688 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  background: #fff6fa;
+  color: #5a4050;
+}
+
+.page {
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ================= HERO ================= */
+
+.hero {
+  min-height: 720px;
+  position: relative;
+
+  display: flex;
+  justify-content: center;
+  text-align: center;
+
+  padding-top: 55px;
+
+  background:
+    radial-gradient(
+      circle at 15% 25%,
+      rgba(255, 255, 255, 0.9),
+      transparent 18%
+    ),
+    radial-gradient(
+      circle at 85% 20%,
+      rgba(255, 255, 255, 0.8),
+      transparent 20%
+    ),
+    linear-gradient(180deg, #a9ddf7 0%, #d9f2f8 38%, #b9e4df 65%, #f8d6ae 100%);
+}
+
+.hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background: linear-gradient(
+    150deg,
+    transparent 55%,
+    rgba(55, 150, 139, 0.35) 55%,
+    rgba(55, 150, 139, 0.35) 68%,
+    transparent 68%
+  );
+
+  opacity: 0.6;
+}
+
+.hero-content {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+}
+
+.hero h1 {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 58px;
+  font-weight: 700;
+  color: #c92f70;
+
+  text-shadow: 2px 3px 0 white;
+
+  margin: 0 0 18px 0;
+
+  letter-spacing: 0;
+  word-spacing: 0;
+
+  white-space: nowrap;
+}
+.subtitle {
+  color: #704c67;
+  font-size: 19px;
+  font-style: italic;
+}
+
+/* ================= MAGIC DOOR ================= */
+
+.magic-door {
+  width: 340px;
+  height: 390px;
+  position: relative;
+  margin: 25px auto 5px;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+/* Khung cửa */
+.door {
+  position: relative;
+
+  width: 230px;
+  height: 330px;
+
+  margin-top: 25px;
+
+  background: linear-gradient(90deg, #c82e70 0%, #ed6199 50%, #c82e70 100%);
+
+  border: 8px solid #a82764;
+  border-radius: 14px 14px 5px 5px;
+
+  box-shadow:
+    inset 0 0 0 5px #ff8ab3,
+    0 12px 25px rgba(100, 25, 70, 0.25);
+
+  z-index: 2;
+}
+
+/* Mặt cửa bên trong */
+.door::before {
+  content: "";
+
+  position: absolute;
+
+  left: 22px;
+  right: 22px;
+  top: 28px;
+  bottom: 28px;
+
+  border: 4px solid #a52360;
+
+  background: linear-gradient(135deg, #ef659d, #d93d7e);
+
+  box-shadow: inset 0 0 0 3px #fa83ad;
+
+  border-radius: 4px;
+}
+
+/* Thanh ngang trên cửa */
+.door::after {
+  content: "";
+
+  position: absolute;
+
+  width: 242px;
+  height: 20px;
+
+  left: 50%;
+  top: -25px;
+
+  transform: translateX(-50%);
+
+  background: #ed6097;
+
+  border: 6px solid #a82764;
+
+  border-radius: 8px;
+}
+
+/* Tay nắm cửa */
+.door-knob {
+  position: absolute;
+
+  width: 25px;
+  height: 25px;
+
+  left: 20px;
+  top: 50%;
+
+  transform: translateY(-50%);
+
+  border-radius: 50%;
+
+  background: #ffd36b;
+
+  border: 4px solid #9f2b61;
+
+  z-index: 5;
+}
+
+/* Đảm bảo phần panel không làm lệch cửa */
+.door-panel {
+  position: absolute;
+  inset: 0;
+}
+/* ================= SPARKLES ================= */
+
+.sparkle {
+  position: absolute;
+
+  color: #ffe16c;
+
+  font-size: 38px;
+
+  z-index: 10;
+
+  animation: sparkle 2s infinite alternate;
+}
+
+.sparkle-1 {
+  left: 5px;
+  top: 90px;
+}
+
+.sparkle-2 {
+  right: 5px;
+  top: 145px;
+}
+
+.sparkle-3 {
+  right: 35px;
+  bottom: 35px;
+}
+
+@keyframes sparkle {
+  from {
+    transform: scale(0.7) rotate(0deg);
+    opacity: 0.45;
+  }
+
+  to {
+    transform: scale(1.25) rotate(20deg);
+    opacity: 1;
+  }
+}
+
+/* ================= OPEN BUTTON ================= */
+
+.open-button {
+  border: none;
+
+  padding: 16px 50px;
+
+  border-radius: 40px;
+
+  background: linear-gradient(90deg, #d5256d, #eb4989);
+
+  color: white;
+
+  font-size: 20px;
+  font-weight: bold;
+
+  cursor: pointer;
+
+  box-shadow: 0 8px 20px rgba(194, 34, 103, 0.35);
+
+  transition: 0.3s;
+}
+
+.open-button:hover {
+  transform: translateY(-4px) scale(1.03);
+
+  box-shadow: 0 13px 25px rgba(194, 34, 103, 0.4);
+}
+
+.open-button span {
+  margin: 0 10px;
+}
+
+.hint {
+  margin-top: 12px;
+
+  color: #bd4778;
+
+  font-size: 14px;
+  font-style: italic;
+
+  line-height: 1.5;
+}
+
+/* ================= EXPERIENCE ================= */
+
+.experience {
+  padding: 65px 30px 30px;
+
+  text-align: center;
+
+  background:
+    radial-gradient(
+      circle at 15% 20%,
+      rgba(255, 190, 220, 0.25),
+      transparent 25%
+    ),
+    radial-gradient(
+      circle at 85% 70%,
+      rgba(255, 180, 210, 0.2),
+      transparent 25%
+    ),
+    #fff7fb;
+}
+
+/* TITLE */
+
+.section-title {
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  gap: 15px;
+}
+
+.section-title h2 {
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 36px;
+
+  color: #cf3271;
+
+  font-style: italic;
+}
+
+.decoration {
+  color: #ee5c93;
+
+  font-size: 30px;
+}
+
+/* DESCRIPTION */
+
+.description {
+  margin-top: 12px;
+
+  color: #795d6e;
+
+  font-size: 15px;
+
+  line-height: 1.7;
+}
+
+/* ================= CARDS ================= */
+
+.cards {
+  max-width: 1050px;
+
+  margin: 40px auto 0;
+
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 25px;
+}
+
+.card {
+  min-height: 270px;
+
+  padding: 30px 25px;
+
+  background: linear-gradient(180deg, #ffffff, #fff2f8);
+
+  border: 1px solid #f5d9e6;
+
+  border-radius: 20px;
+
+  box-shadow: 0 8px 25px rgba(183, 69, 123, 0.08);
+
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+
+  box-shadow: 0 15px 30px rgba(183, 69, 123, 0.16);
+}
+
+.card-icon {
+  width: 90px;
+  height: 90px;
+
+  margin: 0 auto 20px;
+
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+
+  border-radius: 50%;
+
+  background: #ffe8f2;
+
+  font-size: 43px;
+}
+
+.card h3 {
+  color: #cf3271;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-size: 21px;
+
+  font-style: italic;
+
+  margin-bottom: 12px;
+}
+
+.card p {
+  color: #73576b;
+
+  font-size: 14px;
+
+  line-height: 1.7;
+}
+
+/* ================= BOTTOM ================= */
+
+.bottom-message {
+  max-width: 1000px;
+  margin: 55px auto 0;
+  padding: 20px 10px 60px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  color: #d23b76;
+
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 19px;
+  font-style: italic;
+  font-weight: bold;
+
+  letter-spacing: 0;
+  word-spacing: 0;
+}
+.message-left {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+}
+
+.message-left:first-letter {
+  font-size: 35px;
+}
+
+.message-right {
+  text-align: right;
+}
+
+/* ================= FOOTER ================= */
+
+footer {
+  padding: 35px 20px;
+
+  text-align: center;
+
+  background: linear-gradient(180deg, #d83d7b, #b92563);
+
+  color: white;
+}
+
+.footer-title {
+  font-size: 24px;
+
+  font-family: Georgia, "Times New Roman", serif;
+
+  font-weight: bold;
+}
+
+footer p {
+  margin-top: 8px;
+
+  font-size: 13px;
+
+  opacity: 0.9;
+}
+
+.footer-links {
+  display: flex;
+
+  justify-content: center;
+
+  gap: 25px;
+
+  margin-top: 22px;
+
+  font-size: 14px;
+}
+
+footer small {
+  display: block;
+
+  margin-top: 25px;
+
+  opacity: 0.7;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 850px) {
+  .hero h1 {
+    font-size: 48px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+
+    max-width: 450px;
+  }
+}
+
+@media (max-width: 600px) {
+  .hero {
+    min-height: 650px;
+
+    padding-top: 35px;
+  }
+
+  .hero h1 {
+    font-size: 38px;
+  }
+
+  .subtitle {
+    font-size: 16px;
+  }
+
+  .magic-door {
+    transform: scale(0.82);
+
+    margin-top: 0;
+    margin-bottom: -30px;
+  }
+
+  .section-title h2 {
+    font-size: 28px;
+  }
+
+  .description br {
+    display: none;
+  }
+
+  .bottom-message {
+    flex-direction: column;
+
+    gap: 25px;
+
+    text-align: center;
+  }
+
+  .message-right {
+    text-align: center;
+  }
+
+  .footer-links {
+    flex-wrap: wrap;
+  }
+}
+footer {
+  display: none;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  min-height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+/* ============================= */
+/* 10 ẢNH ĐỊA ĐIỂM LƠ LỬNG */
+/* ============================= */
+
+.floating-images {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.travel-image {
+  position: absolute;
+
+  width: 105px;
+  height: 105px;
+
+  object-fit: cover;
+
+  border-radius: 50%;
+
+  border: 4px solid white;
+
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+
+  display: block;
+
+  animation: floating 4s ease-in-out infinite;
+}
+
+/* ============================= */
+/* VỊ TRÍ 10 HÌNH */
+/* ============================= */
+
+.image-1 {
+  top: 115px;
+  left: 7%;
+  animation-delay: 0s;
+}
+
+.image-2 {
+  top: 230px;
+  left: 20%;
+  animation-delay: 0.8s;
+}
+
+.image-3 {
+  top: 350px;
+  left: 7%;
+  animation-delay: 1.6s;
+}
+
+.image-4 {
+  top: 430px;
+  left: 24%;
+  animation-delay: 2.4s;
+}
+
+.image-5 {
+  top: 170px;
+  left: 32%;
+  animation-delay: 1.2s;
+}
+
+.image-6 {
+  top: 115px;
+  right: 7%;
+  animation-delay: 0.5s;
+}
+
+.image-7 {
+  top: 230px;
+  right: 20%;
+  animation-delay: 1.5s;
+}
+
+.image-8 {
+  top: 350px;
+  right: 7%;
+  animation-delay: 2.2s;
+}
+
+.image-9 {
+  top: 430px;
+  right: 24%;
+  animation-delay: 3s;
+}
+
+.image-10 {
+  top: 170px;
+  right: 32%;
+  animation-delay: 1.8s;
+}
+
+/* ============================= */
+/* HIỆU ỨNG LƠ LỬNG */
+/* ============================= */
+
+@keyframes floating {
+  0% {
+    transform: translateY(0px) rotate(0deg);
+  }
+
+  50% {
+    transform: translateY(-15px) rotate(2deg);
+  }
+
+  100% {
+    transform: translateY(0px) rotate(0deg);
+  }
+}
