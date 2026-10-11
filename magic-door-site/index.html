@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Cánh Cửa Thần Kì</title>
+
+  <!-- Font chữ -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Be+Vietnam+Pro:wght@300;500&display=swap" rel="stylesheet">
+
+  <!-- Giao diện -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/door.css">
+  <link rel="stylesheet" href="css/dest.css">
+</head>
+
+<body>
+
+  <!-- ===== 1. TRANG CHỦ: nền + cánh cửa + nút (phóng to khi "lao vào cửa") ===== -->
+  <div id="world">
+
+    <!-- Lớp nền (di chuyển theo chuột) -->
+    <div id="bg"></div>
+    <div class="mist m1"><i></i></div>
+    <div class="mist m2"><i></i></div>
+    <div class="tint"></div>
+
+    <main id="stage">
+      <header>
+        <h1>Cánh Cửa Thần Kì</h1>
+        <p>Đặt tay lên cánh cửa — để định mệnh chọn nơi bạn sẽ đến</p>
+      </header>
+
+      <!-- Cánh cửa: cổng sáng (sau cùng) → khung đá → hai cánh cửa (trên cùng) -->
+      <div id="doorbox">
+        <div class="floor"></div>
+        <div id="tilt">
+          <div id="door">
+            <div class="portal">
+              <div class="swirl"></div>
+              <div id="pscene"></div>
+              <div class="pglow"></div>
+            </div>
+            <img class="fimg" src="assets/door-frame.webp" alt="" draggable="false">
+            <div class="leaves">
+              <div class="leaf l"></div>
+              <div class="leaf r"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <button id="open">✦ Mở cửa ✦</button>
+      <div class="hint">Mỗi lần tải lại trang là một cánh cửa khác</div>
+    </main>
+  </div>
+
+  <!-- ===== 2. HẠT SÁNG bay lơ lửng ===== -->
+  <canvas id="fx"></canvas>
+
+  <!-- ===== 3. MÀN HÌNH ĐIỂM ĐẾN (hiện sau khi mở cửa) ===== -->
+  <section id="dest">
+    <div id="dscene"></div>
+    <div class="shade"></div>
+
+    <div class="card">
+      <small>Điểm đến bí ẩn đã mở ra</small>
+      <h2 id="dn"></h2>
+      <b id="dc"></b>
+      <p id="dd"></p>
+      <div class="chips" id="dch"></div>
+      <button id="again">↺ Mở cánh cửa khác</button>
+    </div>
+  </section>
+
+  <!-- ===== 4. CHỚP SÁNG chuyển cảnh ===== -->
+  <div id="flash"></div>
+
+  <!-- Mã JavaScript: thứ tự nạp quan trọng, main.js phải đứng cuối -->
+  <script src="js/utils.js"></script>
+  <script src="js/destinations.js"></script>
+  <script src="js/scene.js"></script>
+  <script src="js/particles.js"></script>
+  <script src="js/door.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

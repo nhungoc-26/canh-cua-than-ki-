@@ -1,0 +1,181 @@
+/* ==========================================================================
+   door.css — cánh cửa: khung, cổng sáng, hai cánh xoay 3D
+   ========================================================================== */
+
+/* ==========================================================================
+   1. CHUYỂN ĐỘNG: CỬA LƠ LỬNG, TIA SÁNG CHẠY
+   ========================================================================== */
+
+@keyframes fl {
+  50% {
+    transform: translateY(-9px);
+  }
+}
+
+@keyframes sl {
+  to {
+    background-position-x: 52px;
+  }
+}
+
+/* ==========================================================================
+   2. KHUNG CỬA & BÓNG ĐỔ
+   ========================================================================== */
+
+#doorbox {
+  position: relative;
+  width: var(--dw);
+  aspect-ratio: 852/1396;
+  flex: none;
+  margin-top: 3vh;
+}
+
+.floor {
+  position: absolute;
+  left: 50%;
+  bottom: -3%;
+  width: calc(var(--dw)*1.6);
+  height: calc(var(--dw)*.26);
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse, rgba(10, 6, 4, .55), transparent 70%);
+  filter: blur(10px);
+}
+
+#tilt {
+  position: absolute;
+  inset: 0;
+}
+
+#door {
+  position: absolute;
+  inset: 0;
+  animation: fl 6s ease-in-out infinite;
+}
+
+.fimg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+#door {
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .55));
+  transition: filter 2s;
+}
+
+#door.open {
+  filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .55)) drop-shadow(0 0 36px hsl(var(--h) 95% 78%/.5));
+}
+
+/* ==========================================================================
+   3. CỔNG SÁNG PHÍA SAU (cảnh điểm đến hiện ở đây khi mở)
+   ========================================================================== */
+
+.portal {
+  position: absolute;
+  left: 23.944%;
+  top: 12.321%;
+  width: 52.582%;
+  height: 78.94%;
+  clip-path: polygon(50.00% 0.00%, 47.05% 0.06%, 44.09% 0.22%, 41.14% 0.50%, 38.19% 0.87%, 35.23% 1.35%, 32.28% 1.92%, 29.33% 2.57%, 26.37% 3.29%, 23.42% 4.08%, 20.47% 4.92%, 17.51% 5.80%, 14.56% 6.70%, 11.61% 7.62%, 11.61% 16.15%, 0.00% 18.69%, 0.00% 100.00%, 50.00% 100.00%, 100.00% 100.00%, 100.00% 18.69%, 88.39% 16.15%, 88.39% 7.62%, 85.44% 6.70%, 82.49% 5.80%, 79.53% 4.92%, 76.58% 4.08%, 73.63% 3.29%, 70.67% 2.57%, 67.72% 1.92%, 64.77% 1.35%, 61.81% 0.87%, 58.86% 0.50%, 55.91% 0.22%, 52.95% 0.06%, 50.00% 0.00%);
+  overflow: hidden;
+  background: #05030c;
+}
+
+.swirl {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, hsl(48 100% 90%), hsl(calc(var(--h) + 30) 95% 80%) 36%, hsl(195 90% 64%) 70%, hsl(220 80% 40%));
+  transition: opacity 2s;
+}
+
+.swirl::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(255, 255, 255, .3) 22px 30px, transparent 30px 52px);
+  filter: blur(4px);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 45%, #000 80%, transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 45%, #000 80%, transparent);
+  animation: sl 5s linear infinite;
+}
+
+.swirl::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, .95), transparent 55%);
+}
+
+.pglow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 12%, rgba(255, 255, 255, .9), transparent 55%);
+  mix-blend-mode: screen;
+  animation: pulse 3s infinite;
+  transition: opacity 2s;
+}
+
+#pscene {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 1.8s .6s;
+}
+
+.open .swirl,
+.open .pglow {
+  opacity: 0;
+}
+
+.open #pscene {
+  opacity: 1;
+}
+
+/* ==========================================================================
+   4. HAI CÁNH CỬA (xoay 3D quanh bản lề)
+   ========================================================================== */
+
+.leaves {
+  position: absolute;
+  inset: 0;
+  perspective: 1100px;
+}
+
+.leaf {
+  position: absolute;
+  background-size: 100% 100%;
+  transition: transform 2.6s cubic-bezier(.45, .05, .2, 1), filter 2s;
+}
+
+.leaf.l {
+  left: 23.944%;
+  top: 12.321%;
+  width: 26.526%;
+  height: 79.011%;
+  background-image: url(../assets/door-left.webp);
+  transform-origin: 0 50%;
+}
+
+.leaf.r {
+  left: 50.0%;
+  top: 12.321%;
+  width: 26.643%;
+  height: 79.011%;
+  background-image: url(../assets/door-right.webp);
+  transform-origin: 100% 50%;
+}
+
+.open .l {
+  transform: rotateY(-114deg);
+}
+
+.open .r {
+  transform: rotateY(114deg);
+}
+
+.open .leaf {
+  filter: brightness(.8);
+}

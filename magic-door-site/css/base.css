@@ -1,0 +1,233 @@
+/* ==========================================================================
+   base.css — nền trang, bố cục chính, tiêu đề, nút bấm, hạt sáng
+   ========================================================================== */
+
+/* ==========================================================================
+   1. BIẾN CSS (--h: màu ánh sáng, --dw: chiều rộng cửa)
+   ========================================================================== */
+
+:root {
+  --h: 22;
+  --g: hsl(var(--h) 95% 68%);
+  --g2: hsl(calc(var(--h) + 45) 90% 62%);
+  --dw: max(170px, min(440px, 42vw, calc(50vh*0.6103)));
+  --serif: 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Be Vietnam Pro', system-ui, sans-serif;
+}
+
+/* ==========================================================================
+   2. RESET CƠ BẢN
+   ========================================================================== */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  height: 100%;
+  overflow: hidden;
+  background: #07060f;
+  color: #fff;
+  font-family: var(--sans);
+}
+
+body.instant * {
+  transition: none!important;
+}
+
+/* ==========================================================================
+   3. HIỆU ỨNG CHUYỂN ĐỘNG CHUNG
+   ========================================================================== */
+
+@keyframes pulse {
+  50% {
+    opacity: .55;
+  }
+}
+
+@keyframes drift {
+  to {
+    transform: translateX(9%);
+  }
+}
+
+/* ==========================================================================
+   4. THẾ GIỚI: ẢNH NỀN, SƯƠNG MÙ, LỚP PHỦ MÀU
+   ========================================================================== */
+
+#world {
+  position: fixed;
+  inset: 0;
+  overflow: hidden;
+  transition: transform 2.3s cubic-bezier(.75, 0, 1, .55);
+}
+
+#world.dive {
+  transform: scale(16);
+}
+
+#bg {
+  position: absolute;
+  inset: 0;
+  background: url(../assets/background.jpg) center/cover;
+  will-change: transform;
+}
+
+.mist {
+  position: absolute;
+  left: -15%;
+  width: 130%;
+  height: 38%;
+  bottom: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.mist i {
+  display: block;
+  height: 100%;
+  background:
+      radial-gradient(ellipse at 30% 60%, rgba(255, 255, 255, .4), transparent 60%),
+      radial-gradient(ellipse at 75% 50%, rgba(255, 255, 255, .28), transparent 55%);
+  filter: blur(28px);
+  animation: drift 38s ease-in-out infinite alternate;
+}
+
+.m2 {
+  height: 30%;
+  bottom: 6%;
+}
+
+.m2 i {
+  animation-duration: 55s;
+  animation-direction: alternate-reverse;
+  opacity: .7;
+}
+
+.tint {
+  position: absolute;
+  inset: 0;
+  background:
+      radial-gradient(circle at 50% 52%, hsl(var(--h) 80% 50%/.16), transparent 58%),
+      linear-gradient(rgba(10, 6, 30, .5), rgba(10, 6, 30, .18) 50%, rgba(5, 3, 15, .62));
+  transition: background 1s;
+}
+
+/* ==========================================================================
+   5. BỐ CỤC CHÍNH: TIÊU ĐỀ → CỬA → NÚT
+   ========================================================================== */
+
+#stage {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.4vh;
+  text-align: center;
+  padding: env(safe-area-inset-top, 0px) 12px env(safe-area-inset-bottom, 0px);
+}
+
+#stage>header,
+#open,
+.hint {
+  transition: opacity 1s, transform 1s;
+}
+
+body.opening #stage>header,
+body.opening #open,
+body.opening .hint {
+  opacity: 0;
+  transform: translateY(12px);
+  pointer-events: none;
+}
+
+h1 {
+  font: italic 700 clamp(30px, 5.2vw, 62px)/1.05 var(--serif);
+  letter-spacing: .05em;
+  background: linear-gradient(180deg, #fff, var(--g));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 18px hsl(var(--h) 90% 60%/.6));
+}
+
+header p {
+  margin-top: 8px;
+  font-weight: 300;
+  font-size: clamp(12px, 1.4vw, 15px);
+  letter-spacing: .12em;
+  opacity: .85;
+}
+
+/* ==========================================================================
+   6. KHUNG PHONG CẢNH SVG (dùng cho cổng và màn điểm đến)
+   ========================================================================== */
+
+#pscene svg,
+#dscene svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* ==========================================================================
+   7. NÚT "MỞ CỬA"
+   ========================================================================== */
+
+#open {
+  margin-top: 1vh;
+  padding: 16px 46px;
+  border-radius: 999px;
+  border: 1px solid hsl(var(--h) 90% 70%/.7);
+  background: linear-gradient(180deg, hsl(var(--h) 90% 70%/.28), hsl(var(--h) 90% 50%/.1));
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  color: #fff;
+  font: 500 14px var(--sans);
+  letter-spacing: .28em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 28px hsl(var(--h) 90% 60%/.5), inset 0 0 18px hsl(var(--h) 90% 70%/.25);
+}
+
+#open:hover {
+  transform: scale(1.06);
+}
+
+.hint {
+  font-size: 11px;
+  letter-spacing: .14em;
+  opacity: .55;
+}
+
+/* ==========================================================================
+   8. HẠT SÁNG & CHỚP SÁNG CHUYỂN CẢNH
+   ========================================================================== */
+
+#fx {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 3;
+}
+
+#flash {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  background: radial-gradient(circle, #fff 10%, var(--g) 60%, var(--g2));
+  transition: opacity 1s;
+}
+
+.on #dscene svg {
+  animation: arrive 3.2s ease-out;
+}
