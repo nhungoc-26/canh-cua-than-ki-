@@ -14,6 +14,9 @@ const pick = (list) => list[Math.floor(Math.random() * list.length)];
 /** Chạy hàm sau một khoảng thời gian (ms) — viết ngược cho dễ đọc timeline */
 const after = (ms, fn) => setTimeout(fn, ms);
 
+/** Chờ một khoảng thời gian (ms): dùng với await để viết timeline từ trên xuống dưới */
+const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
 /** Trạng thái chung giữa các file */
 const state = {
   hue: 22,        // màu ánh sáng ma thuật (độ màu HSL)

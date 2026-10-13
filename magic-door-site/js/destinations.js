@@ -2,88 +2,119 @@
    destinations.js — danh sách điểm đến (thêm / sửa / xóa tại đây)
 
    Mỗi điểm đến gồm:
-     name, place     tên và nơi chốn hiển thị
-     type            'karst' (đảo đá trên biển) hoặc 'ridge' (dãy núi)
-     sky             màu bầu trời: top (trên) → bottom (sát chân trời)
-     sun             vị trí x, y (0..1) và màu mặt trời / mặt trăng
-     layers          màu lớp núi xa (far) → gần (near)
-     water           (tuỳ chọn) màu mặt nước; không có = cảnh trên đất liền
-     night           (tuỳ chọn) true = cảnh ban đêm có sao
-     terraces        (tuỳ chọn) true = vẽ ruộng bậc thang
-     season          mùa đẹp nhất;  activity  hoạt động gợi ý;  desc  mô tả
+     name     tên hiển thị
+     image    ảnh thật trong thư mục assets/ (tên file giữ nguyên, có dấu cũng được).
+              Có thể là một danh sách tên, vd ['assets/images/a', 'assets/images/b']:
+              trang sẽ thử lần lượt cho đến khi tìm thấy ảnh.
+     desc     mô tả ngắn
+
+   Tuỳ chọn:
+     place      dòng nhỏ dưới tên, vd 'Quảng Ninh · Việt Nam'
+     season     mùa đẹp nhất;  activity  hoạt động gợi ý (hiện thành 2 nhãn nhỏ)
+
+   Nếu ảnh không tải được, trang tự vẽ một phong cảnh SVG thay thế
+   (có thể chỉnh màu bằng: sky, sun, layers, water, night, terraces, type).
    ========================================================================== */
 
 const DESTINATIONS = [
   {
-    name: 'Vịnh Hạ Long',
-    place: 'Quảng Ninh · Việt Nam',
-    type: 'karst',
-    sky: { top: '#2b3566', bottom: '#ffb98a' },
-    sun: { x: 0.55, y: 0.5, color: '#ffe1b0' },
-    layers: { far: '#8a7a9c', near: '#1b2144' },
-    water: '#25365f',
-    season: 'Tháng 9 – 11',
-    activity: 'Du thuyền · Kayak',
-    desc: 'Hàng nghìn đảo đá vôi nhô lên từ làn nước ngọc bích. Chèo kayak giữa sương sớm, rồi ngủ đêm trên du thuyền dưới bầu trời đầy sao.',
+    name: 'Hà Nội',
+    image: 'assets/images/Hà Nội',
+    desc: 'Thủ đô nghìn năm văn hiến, nổi bật với những con phố cổ, di tích lịch sử và ẩm thực đặc sắc.',
   },
   {
-    name: 'El Nido',
-    place: 'Palawan · Philippines',
-    type: 'karst',
-    sky: { top: '#14527a', bottom: '#ffd9a0' },
-    sun: { x: 0.3, y: 0.55, color: '#fff0b8' },
-    layers: { far: '#79b5a8', near: '#0e4b49' },
-    water: '#0e7f93',
-    season: 'Tháng 11 – 5',
-    activity: 'Đảo hoang · Lặn biển',
-    desc: 'Những vách đá phủ xanh bao quanh các đầm nước trong như pha lê. Hành trình nhảy đảo ở đây sẽ khiến bạn quên mất thời gian.',
+    name: 'Tokyo',
+    image: 'assets/images/tokyo',
+    desc: 'Nổi bật với ánh đèn đô thị, những con phố đông đúc và sự kết hợp giữa nét đẹp truyền thống và hiện đại.',
   },
   {
-    name: 'Sa Pa',
-    place: 'Lào Cai · Việt Nam',
-    type: 'ridge',
-    terraces: true,
-    sky: { top: '#6fa6c9', bottom: '#fbe9cf' },
-    sun: { x: 0.75, y: 0.4, color: '#fff6d8' },
-    layers: { far: '#a9c3b8', near: '#2c4a2a' },
-    season: 'Tháng 9 – 10',
-    activity: 'Ruộng bậc thang · Trekking',
-    desc: 'Ruộng bậc thang uốn lượn trong biển mây, mùa lúa chín vàng cả thung lũng. Đi bộ qua các bản làng và uống ly trà nóng giữa sương.',
+    name: 'London',
+    image: 'assets/images/Lon_Don',
+    desc: 'Một trong những thành phố nổi tiếng nhất châu Âu, hấp dẫn bởi lịch sử, nghệ thuật và nền văn hóa phong phú.',
   },
   {
-    name: 'Dolomites',
-    place: 'Nam Tyrol · Ý',
-    type: 'ridge',
-    sky: { top: '#3a2f5b', bottom: '#f2a38f' },
-    sun: { x: 0.5, y: 0.58, color: '#ffd2a1' },
-    layers: { far: '#b79fb3', near: '#2a2236' },
-    season: 'Tháng 6 – 9',
-    activity: 'Hiking · Nhà gỗ trên núi',
-    desc: 'Những đỉnh núi đá nhuộm hồng lúc hoàng hôn, các con đường mòn dẫn qua đồng cỏ và nhà gỗ nhỏ. Thiên đường của người yêu núi.',
+    name: 'Thượng Hải',
+    image: 'assets/images/thuonghai',
+    desc: 'Thành phố không ngủ với những con phố sầm uất, trung tâm mua sắm và khung cảnh lung linh về đêm.',
   },
   {
-    name: 'Lofoten',
-    place: 'Nordland · Na Uy',
-    type: 'ridge',
-    night: true,
-    sky: { top: '#050b24', bottom: '#2a4a7a' },
-    sun: { x: 0.72, y: 0.2, color: '#e6f4ff' },
-    layers: { far: '#2b4466', near: '#050a18' },
-    water: '#07102a',
-    season: 'Tháng 9 – 3',
-    activity: 'Săn cực quang · Làng chài',
-    desc: 'Quần đảo đá dựng đứng giữa biển Bắc, những làng chài đỏ lặng lẽ dưới ánh trăng. Đêm đẹp trời, cực quang sẽ múa trên đầu bạn.',
+    name: 'Hàng Châu',
+    image: 'assets/images/hangchau',
+    desc: 'Một điểm đến nổi tiếng của Trung Quốc, hấp dẫn bởi phong cảnh hữu tình và nền văn hóa lâu đời.',
   },
   {
-    name: 'Hồ Kawaguchi',
-    place: 'Yamanashi · Nhật Bản',
-    type: 'ridge',
-    sky: { top: '#f7b3c8', bottom: '#fff2e0' },
-    sun: { x: 0.3, y: 0.35, color: '#ffffff' },
-    layers: { far: '#c7b3d6', near: '#4a3b6e' },
-    water: '#6d7fb0',
-    season: 'Tháng 4 · Tháng 11',
-    activity: 'Ngắm núi Phú Sĩ · Onsen',
-    desc: 'Mặt hồ phẳng lặng soi bóng bình minh hồng nhạt, mùa xuân có hoa anh đào, mùa thu có lá đỏ. Ngâm onsen sau một ngày dạo quanh hồ.',
+    name: 'Thụy Sĩ',
+    image: 'assets/images/thuysy',
+    desc: 'Quốc gia mang vẻ đẹp thanh bình, nổi bật với thiên nhiên hùng vĩ và những thị trấn cổ kính.',
+  },
+  {
+    name: 'Paris',
+    image: 'assets/images/phap',
+    desc: 'Thủ đô nước Pháp, nổi tiếng với Tháp Eiffel, dòng sông Seine và những đại lộ tuyệt đẹp.',
+  },
+  {
+    name: 'Kim Tự Tháp',
+    image: 'assets/images/kimtuthap',
+    desc: 'Biểu tượng cổ đại của Ai Cập, nổi bật với kiến trúc kỳ vĩ và vẻ đẹp huyền bí.',
+  },
+  {
+    name: 'Bắc Cực',
+    image: 'assets/images/bắc cực',
+    desc: 'Vùng đất Bắc Cực hoang sơ nổi tiếng với những tảng băng khổng lồ, sông băng và những vịnh hẹp tuyệt đẹp.',
+  },
+  {
+    name: 'Bangkok',
+    image: 'assets/images/bangkok',
+    desc: 'Nổi tiếng với những ngôi chùa mang nét kiến trúc độc đáo, cung điện cổ kính và những khu phố nhộn nhịp.',
+  },
+  {
+    name: 'Canada',
+    image: 'assets/images/canada',
+    desc: 'Một điểm đến lý tưởng cho những ai yêu thích thiên nhiên, thích khám phá núi rừng và trải nghiệm bầu không khí trong lành.',
+  },
+  {
+    name: 'Đà Lạt',
+    image: 'assets/images/dalat',
+    desc: 'Thành phố ngàn hoa nổi tiếng với khí hậu mát mẻ, những đồi thông xanh và khung cảnh thơ mộng.',
+  },
+  {
+    name: 'Đà Nẵng',
+    image: 'assets/images/danang',
+    desc: 'Thành phố trẻ và hiện đại, nổi bật với cảnh biển tuyệt đẹp cùng những công trình kiến trúc độc đáo.',
+  },
+  {
+    name: 'Hà Giang',
+    image: 'assets/images/hagiang',
+    desc: 'Một điểm đến đầy ấn tượng với những cung đường đèo uốn lượn giữa núi rừng, dòng sông xanh và cảnh quan thiên nhiên hùng vĩ.',
+  },
+  {
+    name: 'Úc',
+    image: 'assets/images/úc',
+    desc: 'Sở hữu nhiều địa danh ấn tượng như Nhà hát Opera Sydney, Great Barrier Reef và những vùng đất hoang sơ rộng lớn.',
+  },
+  {
+    name: 'Seoul',
+    image: 'assets/images/seoul',
+    desc: 'Điểm đến hấp dẫn dành cho những ai yêu thích văn hóa, ẩm thực, thời trang và không khí sôi động.',
+  },
+  {
+    name: 'Berlin',
+    image: 'assets/images/berlin',
+    desc: 'Thành phố sôi động với nghệ thuật đường phố, văn hóa đa dạng và nhiều địa danh gắn liền với lịch sử châu Âu.',
+  },
+  {
+    name: 'Mỹ',
+    image: 'assets/images/mỹ',
+    desc: 'Nổi bật với sự đa dạng về cảnh quan và văn hóa, từ những đô thị nhộn nhịp đến các vùng thiên nhiên rộng lớn.',
+  },
+  {
+    name: 'Singapore',
+    image: ['assets/images/singaporee', 'assets/images/singapore'],
+    desc: 'Quốc đảo hiện đại nổi tiếng với những công trình kiến trúc độc đáo, không gian xanh và nhịp sống sôi động.',
+  },
+  {
+    name: 'Hong Kong',
+    image: 'assets/images/hongkong',
+    desc: 'Một điểm đến sôi động với các khu mua sắm, chợ truyền thống, nhà hàng và những góc phố mang đậm nét văn hóa địa phương.',
   },
 ];

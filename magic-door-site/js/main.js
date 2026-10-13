@@ -35,7 +35,7 @@ function animate() {
   layers.doorTilt.style.transform =
     `perspective(1300px) rotateY(${x * 8}deg) rotateX(${-y * 5}deg) translate3d(${x * 10}px, ${y * 6}px, 0)`;
   layers.destScene.style.transform =
-    `translate3d(${-x * 26}px, ${-y * 16}px, 0) scale(1.08)`;
+    `translate3d(${-x * 26}px, ${-y * 16}px, 0) scale(${layers.destScene.dataset.zoom || 1.08})`;
 
   drawParticles(x);
   requestAnimationFrame(animate);

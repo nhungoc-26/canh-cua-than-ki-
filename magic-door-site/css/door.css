@@ -3,18 +3,12 @@
    ========================================================================== */
 
 /* ==========================================================================
-   1. CHUYỂN ĐỘNG: CỬA LƠ LỬNG, TIA SÁNG CHẠY
+   1. CHUYỂN ĐỘNG: CỬA LƠ LỬNG
    ========================================================================== */
 
 @keyframes fl {
   50% {
     transform: translateY(-9px);
-  }
-}
-
-@keyframes sl {
-  to {
-    background-position-x: 52px;
   }
 }
 
@@ -84,58 +78,165 @@
   background: #05030c;
 }
 
+/* Nền tối bên trong cổng: nơi vòng tròn phép thuật hiện ra */
 .swirl {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, hsl(48 100% 90%), hsl(calc(var(--h) + 30) 95% 80%) 36%, hsl(195 90% 64%) 70%, hsl(220 80% 40%));
-  transition: opacity 2s;
+  background: radial-gradient(ellipse at 50% 50%, hsl(var(--h) 65% 24%), #07040f 72%);
 }
 
-.swirl::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: repeating-linear-gradient(90deg, transparent 0 22px, rgba(255, 255, 255, .3) 22px 30px, transparent 30px 52px);
-  filter: blur(4px);
-  -webkit-mask-image: linear-gradient(180deg, transparent, #000 45%, #000 80%, transparent);
-  mask-image: linear-gradient(180deg, transparent, #000 45%, #000 80%, transparent);
-  animation: sl 5s linear infinite;
-}
-
-.swirl::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 100%, rgba(255, 255, 255, .95), transparent 55%);
-}
-
+/* Chớp sáng trắng lúc vòng tròn nổ, che khoảnh khắc đổi sang điểm đến */
 .pglow {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 12%, rgba(255, 255, 255, .9), transparent 55%);
+  opacity: 0;
+  background: radial-gradient(circle at 50% 50%, #fff 0, hsl(var(--h) 100% 85% / .9) 28%, transparent 70%);
   mix-blend-mode: screen;
-  animation: pulse 3s infinite;
-  transition: opacity 2s;
 }
 
+/* Cảnh điểm đến: ẩn cho tới khi vòng tròn phép thuật nổ sáng (class .reveal) */
 #pscene {
   position: absolute;
   inset: 0;
   opacity: 0;
-  transition: opacity 1.8s .6s;
+  transition: opacity 1.5s ease .35s;
 }
 
-.open .swirl,
-.open .pglow {
-  opacity: 0;
-}
-
-.open #pscene {
+.reveal #pscene {
   opacity: 1;
 }
 
+.reveal .pglow {
+  animation: mc-flash 1.5s ease-out forwards;
+}
+
+@keyframes mc-flash {
+  0% {
+    opacity: 0;
+  }
+
+  18% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
 /* ==========================================================================
-   4. HAI CÁNH CỬA (xoay 3D quanh bản lề)
+   4. VÒNG TRÒN PHÉP THUẬT (nội dung do js/circle.js tạo ra mỗi lần mở cửa)
+   Thứ tự: nét được vẽ dần → quay → tụ sáng (.charge) → nổ sáng (.reveal)
+   ========================================================================== */
+
+#mcircle {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.mc {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  fill: none;
+  stroke: var(--mc);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  filter: drop-shadow(0 0 4px var(--mc)) drop-shadow(0 0 12px var(--mc));
+}
+
+.mc .alt {
+  stroke: var(--mc2);
+}
+
+.mc .solid {
+  fill: var(--mc);
+  stroke: none;
+}
+
+.mc .solid2 {
+  fill: var(--mc2);
+  stroke: none;
+}
+
+.mc .soft {
+  fill: var(--mc);
+  fill-opacity: .14;
+}
+
+/* Quay quanh tâm (gốc toạ độ của viewBox) */
+.mc-spin {
+  animation: mc-spin 40s linear infinite;
+}
+
+@keyframes mc-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Nét được vẽ dần ra (--delay, --dur do JS đặt cho từng lớp) */
+.mc-draw {
+  stroke-dasharray: 1 2;
+  stroke-dashoffset: 1;
+  animation: mc-draw var(--dur, 1.2s) cubic-bezier(.3, .6, .3, 1) var(--delay, .7s) forwards;
+}
+
+@keyframes mc-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* Hiện dần */
+.mc-fade {
+  opacity: 0;
+  animation: mc-fade .9s ease-out var(--delay, .7s) forwards;
+}
+
+@keyframes mc-fade {
+  to {
+    opacity: 1;
+  }
+}
+
+/* Tụ sáng ngay trước khi nổ */
+.charge .mc {
+  animation: mc-charge .8s ease-in-out forwards;
+}
+
+@keyframes mc-charge {
+  to {
+    transform: scale(1.07);
+    filter: drop-shadow(0 0 8px var(--mc)) drop-shadow(0 0 26px var(--mc)) brightness(1.4);
+  }
+}
+
+/* Nổ sáng: vòng tròn phóng to, mờ dần để lộ điểm đến phía sau */
+.reveal #mcircle {
+  animation: mc-burst 1.4s cubic-bezier(.5, 0, .8, .4) forwards;
+}
+
+@keyframes mc-burst {
+  from {
+    transform: scale(1.07);
+    opacity: 1;
+    filter: brightness(1.4);
+  }
+
+  to {
+    transform: scale(2.6);
+    opacity: 0;
+    filter: brightness(3);
+  }
+}
+
+/* ==========================================================================
+   5. HAI CÁNH CỬA (xoay 3D quanh bản lề)
    ========================================================================== */
 
 .leaves {

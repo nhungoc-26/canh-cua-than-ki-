@@ -160,8 +160,16 @@ function sceneRidges(d, horizon) {
 
 /* --- Hàm chính ----------------------------------------------------------------- */
 
+/** Màu mặc định khi điểm đến không khai báo sky / sun / layers */
+const DEFAULT_SCENE = {
+  sky: { top: '#4f7191', bottom: '#f5c7a5' },
+  sun: { x: 0.65, y: 0.4, color: '#ffe5b5' },
+  layers: { far: '#8fa89a', near: '#293b35' },
+};
+
 /** Trả về chuỗi SVG hoàn chỉnh của một điểm đến */
-function renderScene(d) {
+function renderScene(data) {
+  const d = { ...DEFAULT_SCENE, ...data };
   const horizon = d.water ? 580 : 620;
 
   return `<svg viewBox="0 0 ${SCENE_W} ${SCENE_H}" preserveAspectRatio="xMidYMid slice">` +

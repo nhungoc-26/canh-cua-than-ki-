@@ -42,6 +42,17 @@ function drawParticles(parallaxX) {
       p.vy *= 0.985;
     }
 
+    // Vừa bị bung ra khỏi cổng: chậm dần về trạng thái bay lơ lửng bình thường
+    if (p.burst) {
+      p.vx *= 0.95;
+      p.vy *= 0.95;
+      if (Math.abs(p.vx) + Math.abs(p.vy) < 0.5) {
+        p.burst = false;
+        p.vx = rand(-0.15, 0.15);
+        p.vy = rand(-0.4, -0.05);
+      }
+    }
+
     p.x += p.vx - parallaxX * p.size * 0.4;
     p.y += p.vy;
 
@@ -62,5 +73,19 @@ function drawParticles(parallaxX) {
     ctx.shadowColor = `hsl(${hue}, 100%, 70%)`;
     ctx.shadowBlur = 8;
     ctx.fill();
+  }
+}
+
+/** Bung các hạt sáng ra xa khỏi cổng (lúc vòng tròn phép thuật nổ sáng) */
+function burstParticles() {
+  const centerX = innerWidth / 2;
+  const centerY = innerHeight * 0.5;
+
+  for (const p of particles) {
+    const angle = Math.atan2(p.y - centerY, p.x - centerX);
+    const speed = rand(2, 6);
+    p.vx = Math.cos(angle) * speed;
+    p.vy = Math.sin(angle) * speed;
+    p.burst = true;
   }
 }
