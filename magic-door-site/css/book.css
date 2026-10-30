@@ -1,0 +1,901 @@
+/* =====================================================================
+   CẨM NANG DU LỊCH — GIAO DIỆN TOÀN MÀN HÌNH, LẬT TRANG THẬT SỰ
+   Ảnh điểm tham quan ở trái, ghi chú ở phải.
+   ===================================================================== */
+
+* {
+  box-sizing: border-box;
+}
+
+body.travel-book-open {
+  overflow: hidden;
+}
+
+.travel-book-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: grid;
+  place-items: stretch;
+  padding: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity .25s ease, visibility 0s linear .25s;
+}
+
+.travel-book-overlay.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transition: opacity .25s ease;
+}
+
+.travel-book-backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(7, 6, 9, .88);
+  -webkit-backdrop-filter: blur(7px);
+  backdrop-filter: blur(7px);
+}
+
+.travel-book-dialog {
+  position: relative;
+  z-index: 1;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  max-width: none;
+  max-height: none;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  margin: 0;
+  padding: 14px clamp(12px, 2vw, 30px) 10px;
+  overflow: hidden;
+  border: 0;
+  border-radius: 0;
+  color: #30251c;
+  background:
+    radial-gradient(ellipse at 0% 0%, rgba(255,255,255,.92), transparent 38%),
+    linear-gradient(145deg, #f4ead5, #e6d4b2 65%, #d5bb91);
+  box-shadow:
+    inset 0 0 0 1px rgba(129, 91, 45, .25),
+    inset 0 0 45px rgba(129, 91, 45, .08);
+  transform: none;
+}
+
+.travel-book-overlay.open .travel-book-dialog {
+  transform: none;
+}
+
+.book-toolbar {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  min-height: 48px;
+  padding: 0 1px 10px;
+  color: #3d3024;
+  border-bottom: 1px solid rgba(153, 113, 67, .28);
+}
+
+.book-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.book-brand-mark {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(112, 76, 38, .34);
+  border-radius: 50%;
+  color: #89612f;
+  font-size: 19px;
+}
+
+.book-brand div {
+  display: grid;
+  gap: 2px;
+}
+
+.book-brand small {
+  color: #91683c;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .2em;
+}
+
+.book-brand div span {
+  font: italic 700 21px/1.1 Georgia, serif;
+}
+
+.book-toolbar-note {
+  color: #7c6549;
+  font-size: 11px;
+  letter-spacing: .06em;
+}
+
+.book-close {
+  display: grid;
+  place-items: center;
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgba(93, 66, 38, .35);
+  border-radius: 50%;
+  color: #503a25;
+  background: rgba(255,255,255,.42);
+  cursor: pointer;
+  font-size: 17px;
+}
+
+.book-close:hover {
+  background: rgba(255,255,255,.85);
+}
+
+.book-reader {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns:
+    clamp(34px, 4vw, 58px)
+    minmax(0, 1fr)
+    clamp(34px, 4vw, 58px);
+  align-items: stretch;
+  gap: clamp(6px, 1.2vw, 18px);
+  min-height: 0;
+  padding: 10px 0 8px;
+}
+
+.book-arrow {
+  align-self: center;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  max-width: 58px;
+  height: 86px;
+  border: 1px solid rgba(96, 65, 35, .34);
+  border-radius: 14px;
+  color: #6e4b28;
+  background: rgba(255,255,255,.40);
+  cursor: pointer;
+  font: 300 clamp(34px, 4vw, 54px)/1 Georgia, serif;
+  transition: background .2s, transform .2s, opacity .2s;
+}
+
+.book-arrow:hover:not(:disabled) {
+  background: rgba(255,255,255,.88);
+  transform: scale(1.04);
+}
+
+.book-arrow:disabled {
+  opacity: .25;
+  cursor: default;
+}
+
+.book-arrow:focus-visible,
+.book-close:focus-visible,
+.book-controls button:focus-visible {
+  outline: 2px solid #8d5725;
+  outline-offset: 3px;
+}
+
+.book-page {
+  position: relative;
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  padding: clamp(14px, 2vw, 26px) clamp(14px, 2vw, 28px);
+  overflow: hidden;
+  border: 1px solid rgba(125, 87, 46, .30);
+  background:
+    linear-gradient(
+      90deg,
+      rgba(114, 80, 45, .055),
+      transparent 3%,
+      transparent 97%,
+      rgba(114, 80, 45, .05)
+    ),
+    repeating-linear-gradient(
+      0deg,
+      rgba(120, 88, 50, .02) 0,
+      rgba(120, 88, 50, .02) 1px,
+      transparent 1px,
+      transparent 5px
+    ),
+    #fff8e9;
+  box-shadow:
+    0 8px 24px rgba(50, 32, 18, .15),
+    inset 0 0 26px rgba(144, 103, 51, .04);
+  transform-origin: left center;
+  backface-visibility: hidden;
+}
+
+.book-page.turn-forward {
+  animation: page-turn-next .36s ease both;
+}
+
+.book-page.turn-backward {
+  animation: page-turn-prev .36s ease both;
+  transform-origin: right center;
+}
+
+@keyframes page-turn-next {
+  0% {
+    opacity: .35;
+    transform: perspective(1400px) rotateY(-9deg) translateX(18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(1400px) rotateY(0) translateX(0);
+  }
+}
+
+@keyframes page-turn-prev {
+  0% {
+    opacity: .35;
+    transform: perspective(1400px) rotateY(9deg) translateX(-18px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: perspective(1400px) rotateY(0) translateX(0);
+  }
+}
+
+.book-page-topline,
+.book-page-footer {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: #92734f;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .15em;
+}
+
+.book-page-topline {
+  padding-bottom: 11px;
+  border-bottom: 1px solid rgba(153, 113, 67, .28);
+}
+
+.book-page-footer {
+  padding-top: 10px;
+  border-top: 1px solid rgba(153, 113, 67, .28);
+}
+
+.book-page-layout {
+  flex: 1 1 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr);
+  align-items: stretch;
+  gap: clamp(18px, 2.6vw, 40px);
+  min-height: 0;
+  height: 100%;
+  padding: clamp(14px, 2vw, 24px) 0;
+  overflow: hidden;
+}
+
+.book-photo-frame {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  margin: 0;
+  padding: 9px 9px 12px;
+  background: #fffdf7;
+  border: 1px solid rgba(128, 91, 50, .25);
+  box-shadow: 0 7px 22px rgba(75, 49, 27, .12);
+  transform: rotate(-.25deg);
+}
+
+.book-photo-frame[hidden] {
+  display: none !important;
+}
+
+#book-image {
+  display: block;
+  flex: 1 1 auto;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  max-height: none;
+  object-fit: contain;
+  background: #eee1c8;
+}
+
+#book-image[hidden] {
+  display: none !important;
+}
+
+.book-image-placeholder {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 22px;
+  text-align: center;
+  color: #7a5a36;
+  background: radial-gradient(ellipse at 50% 30%, #fff6e5, #e9d7b5);
+}
+
+.book-image-placeholder[hidden] {
+  display: none !important;
+}
+
+.placeholder-star {
+  font-size: 40px;
+  color: #a57b42;
+}
+
+.book-image-placeholder strong {
+  font: italic 700 24px/1.2 Georgia, serif;
+}
+
+.book-image-placeholder small {
+  max-width: 330px;
+  font-size: 11px;
+  line-height: 1.65;
+  overflow-wrap: anywhere;
+}
+
+.book-photo-frame figcaption {
+  flex: 0 0 auto;
+  padding: 10px 5px 0;
+  color: #92734f;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .13em;
+  text-align: center;
+}
+
+.book-copy {
+  min-width: 0;
+  min-height: 0;
+  height: 100%;
+  max-height: none !important;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  padding: 2px 3px 2px 0;
+}
+
+.book-copy-kicker {
+  flex: 0 0 auto;
+  color: #a87942;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .19em;
+}
+
+.book-copy h2 {
+  flex: 0 0 auto;
+  margin: 10px 0 10px;
+  color: #38291c;
+  font: italic 700 clamp(28px, 3.1vw, 45px)/1.05 Georgia, serif;
+  overflow-wrap: anywhere;
+}
+
+.book-summary {
+  flex: 0 0 auto;
+  margin: 0;
+  color: #5d4936;
+  font-size: clamp(12px, 1vw, 15px);
+  line-height: 1.75;
+}
+
+.book-summary:empty {
+  display: none;
+}
+
+.book-divider {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 12px 0 8px;
+  color: #aa824b;
+}
+
+.book-divider::before,
+.book-divider::after {
+  content: "";
+  height: 1px;
+  flex: 1;
+  background: rgba(153, 113, 67, .3);
+}
+
+#guide-content {
+  flex: 1 1 auto;
+  min-height: 0;
+  overflow: hidden;
+  color: #51402e;
+  font-size: clamp(12px, .95vw, 14px);
+  line-height: 1.7;
+}
+
+#guide-content p {
+  margin: 0 0 10px;
+  color: #51402e;
+  font-size: inherit;
+  line-height: inherit;
+  font-weight: 400;
+  overflow-wrap: anywhere;
+}
+
+#guide-content h3 {
+  margin: 14px 0 7px;
+  color: #76532e;
+  font: 700 clamp(15px, 1.3vw, 20px)/1.25 Georgia, serif;
+}
+
+#guide-content h4 {
+  margin: 0 0 6px;
+  color: #7c542a;
+  font: 700 clamp(13px, 1vw, 15px)/1.3 "Be Vietnam Pro", sans-serif;
+}
+
+#guide-content h5 {
+  margin: 0 0 5px;
+  color: #8b6335;
+  font: 700 12px/1.35 "Be Vietnam Pro", sans-serif;
+}
+
+#guide-content .guide-list-line {
+  padding-left: 4px;
+}
+
+/* Trang địa điểm: ảnh trái, ghi chú bên phải. */
+.book-page.page-attraction .book-page-layout,
+.book-page.page-cover .book-page-layout {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.06fr);
+}
+
+.book-page.no-image .book-photo-frame {
+  display: none !important;
+}
+
+.book-page.no-image .book-page-layout {
+  grid-template-columns: minmax(0, 1fr) !important;
+}
+
+.book-page.no-image .book-copy {
+  max-width: 100%;
+}
+
+/* Thời điểm du lịch: tận dụng bề ngang, không hiện khung ảnh. */
+.book-page.page-season #guide-content {
+  column-count: 2;
+  column-gap: clamp(24px, 4vw, 64px);
+  column-fill: balance;
+}
+
+.book-page.page-season #guide-content p,
+.book-page.page-season #guide-content h3,
+.book-page.page-season #guide-content h4 {
+  break-inside: avoid;
+}
+
+/* Lịch trình: một trang, chia thành các khối nhỏ 2 cột. */
+.book-page.page-itinerary .book-divider,
+.book-page.page-cost .book-divider,
+.book-page.page-notes .book-divider,
+.book-page.page-season .book-divider {
+  display: none;
+}
+
+.book-page.page-itinerary .book-copy h2 {
+  margin-bottom: 12px;
+}
+
+#guide-content .itinerary-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 12px 26px;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+#guide-content .itinerary-block {
+  min-width: 0;
+  break-inside: avoid;
+  padding: 0 0 7px;
+}
+
+#guide-content .itinerary-block-wide {
+  grid-column: 1 / -1;
+}
+
+#guide-content .itinerary-block p {
+  margin-bottom: 0;
+  font-size: clamp(11px, .85vw, 13px);
+  line-height: 1.55;
+}
+
+#guide-content .itinerary-block h4 {
+  padding-bottom: 5px;
+  border-bottom: 1px solid rgba(153, 113, 67, .28);
+}
+
+/* Chi phí: một trang toàn chiều ngang, nội dung chia hai cột nếu cần. */
+.book-page.page-cost #guide-content {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-content: start;
+  gap: 8px 30px;
+}
+
+.book-page.page-cost #guide-content p {
+  margin: 0;
+  font-size: clamp(12px, .95vw, 14px);
+  line-height: 1.65;
+}
+
+.book-page.page-cost .book-copy h2 {
+  margin-bottom: 16px;
+}
+
+.book-page.page-cost .book-copy-kicker {
+  margin-top: 2px;
+}
+
+/* Những dòng chú thích/ghi chú ngắn. */
+#guide-content .book-empty-note {
+  padding: 12px;
+  border-left: 2px solid #c19a61;
+  color: #816d54;
+  background: rgba(181, 143, 82, .08);
+  font-style: italic;
+}
+
+.book-controls {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-height: 34px;
+  padding: 7px clamp(42px, 6vw, 85px) 0;
+  color: #816448;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .04em;
+}
+
+.book-progress {
+  flex: 1 1 auto;
+  height: 3px;
+  overflow: hidden;
+  border-radius: 5px;
+  background: rgba(111, 79, 44, .18);
+}
+
+.book-progress span {
+  display: block;
+  width: 1%;
+  height: 100%;
+  background: #9e713b;
+  transition: width .25s ease;
+}
+
+.book-controls button {
+  flex: 0 0 auto;
+  padding: 7px 12px;
+  border: 1px solid rgba(96, 65, 35, .28);
+  border-radius: 999px;
+  color: #76522e;
+  background: rgba(255,255,255,.3);
+  cursor: pointer;
+  font-size: 10px;
+}
+
+.book-controls button:hover:not(:disabled) {
+  background: rgba(255,255,255,.75);
+}
+
+.book-controls button:disabled {
+  opacity: .35;
+  cursor: default;
+}
+
+.book-image-help {
+  flex: 0 0 auto;
+  margin: 5px 0 0;
+  color: #8d785e;
+  text-align: center;
+  font-size: 9px;
+  line-height: 1.3;
+}
+
+.book-image-help code {
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: rgba(102, 73, 41, .08);
+}
+
+@media (max-width: 800px) {
+  .travel-book-dialog {
+    padding: 9px 8px 7px;
+  }
+
+  .book-toolbar {
+    min-height: 42px;
+    padding-bottom: 7px;
+  }
+
+  .book-toolbar-note {
+    display: none;
+  }
+
+  .book-brand-mark {
+    width: 30px;
+    height: 30px;
+    flex-basis: 30px;
+  }
+
+  .book-brand div span {
+    font-size: 17px;
+  }
+
+  .book-brand small {
+    font-size: 8px;
+  }
+
+  .book-reader {
+    grid-template-columns: 29px minmax(0, 1fr) 29px;
+    gap: 5px;
+    padding: 7px 0;
+  }
+
+  .book-arrow {
+    width: 29px;
+    height: 52px;
+    border-radius: 8px;
+    font-size: 32px;
+  }
+
+  .book-page {
+    padding: 10px;
+  }
+
+  .book-page-topline,
+  .book-page-footer {
+    font-size: 8px;
+    letter-spacing: .08em;
+  }
+
+  .book-page-layout,
+  .book-page.page-attraction .book-page-layout,
+  .book-page.page-cover .book-page-layout {
+    grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr);
+    gap: 10px;
+    padding: 10px 0;
+  }
+
+  .book-photo-frame {
+    padding: 5px 5px 8px;
+    transform: none;
+  }
+
+  .book-photo-frame figcaption {
+    font-size: 7px;
+    letter-spacing: .05em;
+  }
+
+  .book-copy h2 {
+    font-size: clamp(20px, 4vw, 30px);
+    margin: 7px 0;
+  }
+
+  .book-copy-kicker {
+    font-size: 7px;
+    letter-spacing: .1em;
+  }
+
+  .book-summary,
+  #guide-content {
+    font-size: 11px;
+    line-height: 1.5;
+  }
+
+  #guide-content p {
+    margin-bottom: 6px;
+  }
+
+  #guide-content h3 {
+    font-size: 14px;
+    margin: 8px 0 5px;
+  }
+
+  #guide-content h4 {
+    font-size: 11px;
+  }
+
+  #guide-content h5 {
+    font-size: 10px;
+  }
+
+  #guide-content .itinerary-grid {
+    gap: 7px 10px;
+  }
+
+  #guide-content .itinerary-block p {
+    font-size: 10px;
+    line-height: 1.45;
+  }
+
+  .book-controls {
+    gap: 7px;
+    padding: 5px 34px 0;
+    font-size: 8px;
+  }
+
+  .book-controls button {
+    padding: 5px 7px;
+    font-size: 8px;
+  }
+
+  .book-image-help {
+    font-size: 7px;
+  }
+
+  .book-page.page-season #guide-content {
+    column-gap: 14px;
+  }
+}
+
+@media (max-width: 560px) {
+  .book-page-layout,
+  .book-page.page-attraction .book-page-layout,
+  .book-page.page-cover .book-page-layout {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(110px, 25%) minmax(0, 1fr);
+    gap: 8px;
+  }
+
+  .book-photo-frame {
+    min-height: 0;
+  }
+
+  #book-image {
+    object-fit: contain;
+  }
+
+  .book-copy {
+    min-height: 0;
+  }
+
+  .book-page.page-season #guide-content,
+  .book-page.page-cost #guide-content {
+    column-count: 1;
+    display: block;
+  }
+
+  #guide-content .itinerary-grid {
+    display: block;
+    overflow: hidden;
+  }
+
+  #guide-content .itinerary-block {
+    margin-bottom: 8px;
+  }
+
+  .book-image-help {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .travel-book-overlay,
+  .book-progress span {
+    transition: none;
+  }
+
+  .book-page.turn-forward,
+  .book-page.turn-backward {
+    animation: none;
+  }
+}
+
+/* Tự thu gọn khi một đoạn nguồn dài hơn trang giấy. */
+.book-page.fit-compact .book-copy h2 {
+  font-size: clamp(23px, 2.4vw, 34px);
+  margin: 7px 0;
+}
+
+.book-page.fit-compact .book-summary,
+.book-page.fit-compact #guide-content {
+  font-size: 11px;
+  line-height: 1.48;
+}
+
+.book-page.fit-compact #guide-content p {
+  margin-bottom: 6px;
+  line-height: 1.48;
+}
+
+.book-page.fit-compact #guide-content h3 {
+  font-size: 15px;
+  margin: 8px 0 5px;
+}
+
+.book-page.fit-compact #guide-content h4 {
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.book-page.fit-compact #guide-content .itinerary-grid {
+  gap: 6px 14px;
+}
+
+.book-page.fit-compact #guide-content .itinerary-block p {
+  font-size: 10px;
+  line-height: 1.38;
+}
+
+.book-page.fit-compact.page-cost #guide-content p {
+  font-size: 11px;
+  line-height: 1.45;
+}
+
+.book-page.fit-more-compact .book-copy h2 {
+  font-size: clamp(20px, 2vw, 28px);
+  margin: 5px 0;
+}
+
+.book-page.fit-more-compact .book-copy-kicker {
+  font-size: 7px;
+}
+
+.book-page.fit-more-compact .book-summary,
+.book-page.fit-more-compact #guide-content {
+  font-size: 10px;
+  line-height: 1.35;
+}
+
+.book-page.fit-more-compact #guide-content p {
+  margin-bottom: 4px;
+  line-height: 1.35;
+}
+
+.book-page.fit-more-compact #guide-content h3 {
+  font-size: 13px;
+  margin: 5px 0 3px;
+}
+
+.book-page.fit-more-compact #guide-content h4 {
+  font-size: 10px;
+  margin-bottom: 3px;
+}
+
+.book-page.fit-more-compact #guide-content .itinerary-grid {
+  gap: 4px 10px;
+}
+
+.book-page.fit-more-compact #guide-content .itinerary-block p {
+  font-size: 9px;
+  line-height: 1.3;
+}
+
+.book-page.fit-more-compact.page-cost #guide-content p {
+  font-size: 10px;
+  line-height: 1.35;
+}

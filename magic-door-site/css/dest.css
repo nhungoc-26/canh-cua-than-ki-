@@ -124,3 +124,73 @@
   text-transform: uppercase;
   cursor: pointer;
 }
+
+
+/* Nút mở cẩm nang chi tiết */
+#guide-open {
+  display: block;
+  margin: 0 0 12px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.55);
+  background: rgba(255,255,255,.13);
+  color: #fff;
+  font: 500 12px var(--sans);
+  letter-spacing: .08em;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+}
+#guide-open:hover { background: rgba(255,255,255,.24); }
+
+/* Cửa sổ cẩm nang */
+#guide-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(3, 5, 16, .78);
+  backdrop-filter: blur(12px);
+}
+#guide-modal.open { display: flex; }
+.guide-panel {
+  position: relative;
+  width: min(860px, 100%);
+  max-height: min(86vh, 900px);
+  overflow-y: auto;
+  padding: clamp(22px, 4vw, 42px);
+  border: 1px solid rgba(255,255,255,.22);
+  border-radius: 22px;
+  color: #fff;
+  background: linear-gradient(145deg, rgba(23,25,45,.98), rgba(12,15,29,.98));
+  box-shadow: 0 24px 90px #0009;
+}
+#guide-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  width: 38px;
+  height: 38px;
+  border: 1px solid #ffffff44;
+  border-radius: 50%;
+  color: #fff;
+  background: #ffffff18;
+  cursor: pointer;
+  font-size: 18px;
+}
+.guide-panel > small { color: #f4c987; letter-spacing: .22em; }
+.guide-panel h2 { font: italic 700 clamp(32px, 5vw, 52px)/1.1 var(--serif); margin: 12px 0 24px; }
+#guide-content h3 {
+  margin: 26px 0 10px;
+  color: #f4c987;
+  font: 700 23px var(--serif);
+}
+#guide-content h4 { margin: 20px 0 8px; font-size: 17px; color: #fff; }
+#guide-content p { margin: 9px 0; color: #f0eff7; font-size: 14px; font-weight: 300; line-height: 1.85; }
+@media (max-width: 600px) {
+  #guide-modal { padding: 8px; }
+  .guide-panel { max-height: 92vh; border-radius: 16px; padding: 22px 18px; }
+  #guide-open { font-size: 11px; letter-spacing: .02em; }
+}
