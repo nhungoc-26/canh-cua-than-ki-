@@ -5,7 +5,7 @@
 const canvas = $('#fx');
 const ctx = canvas.getContext('2d');
 
-const particles = Array.from({ length: 45 }, () => ({
+const particles = Array.from({ length: 24 }, () => ({
   x: rand(0, innerWidth),
   y: rand(0, innerHeight),
   vx: rand(-0.15, 0.15),   // vận tốc ngang
@@ -17,7 +17,7 @@ const particles = Array.from({ length: 45 }, () => ({
 
 /** Đặt kích thước canvas theo màn hình (tối đa 2x cho máy retina) */
 function resizeCanvas() {
-  const ratio = Math.min(devicePixelRatio || 1, 2);
+  const ratio = Math.min(devicePixelRatio || 1, 1.5);
   canvas.width = innerWidth * ratio;
   canvas.height = innerHeight * ratio;
   ctx.setTransform(ratio, 0, 0, ratio, 0, 0);
@@ -71,7 +71,7 @@ function drawParticles(parallaxX) {
     }
     ctx.fillStyle = `hsla(${hue}, 100%, 78%, ${0.28 + 0.25 * Math.sin(p.phase)})`;
     ctx.shadowColor = `hsl(${hue}, 100%, 70%)`;
-    ctx.shadowBlur = 8;
+    ctx.shadowBlur = 3;
     ctx.fill();
   }
 }

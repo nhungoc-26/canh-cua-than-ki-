@@ -3,416 +3,220 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-
+  <meta name="theme-color" content="#172b35">
   <title>Cánh Cửa Thần Kì</title>
 
   <!-- Font chữ -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500;1,600&family=Be+Vietnam+Pro:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 
-  <!-- CSS giao diện cũ -->
+  <!-- CSS gốc: giữ lại để các hiệu ứng và màn hình cũ tiếp tục hoạt động -->
   <link rel="stylesheet" href="css/base.css">
   <link rel="stylesheet" href="css/door.css">
   <link rel="stylesheet" href="css/dest.css">
-
-  <!-- CSS cuốn sách du lịch mới -->
   <link rel="stylesheet" href="css/book.css">
-</head>
 
+<!-- CSS giao diện trang chủ -->
+<link rel="stylesheet" href="css/home-redesign.css">
+<link rel="stylesheet" href="css/home-premium.css">
+<link rel="stylesheet" href="css/home-screen-fix.css">
+</head>
 <body>
 
   <!-- =========================================
        1. TRANG CHỦ: CÁNH CỬA THẦN KÌ
+       Giữ nguyên các ID mà JavaScript cũ đang sử dụng
   ========================================== -->
   <div id="world">
-
-    <!-- Nền trang chủ -->
     <div id="bg"></div>
-
-    <div class="mist m1">
-      <i></i>
-    </div>
-
-    <div class="mist m2">
-      <i></i>
-    </div>
-
+    <div class="mist m1"><i></i></div>
+    <div class="mist m2"><i></i></div>
     <div class="tint"></div>
 
-    <main id="stage">
+    <main id="stage" class="home-redesign">
+      <!-- Thanh điều hướng -->
+      <header class="site-header">
+        <a class="site-brand" href="#door-intro" aria-label="Cánh Cửa Thần Kì - Trang chủ">
+          <span class="site-brand-mark" aria-hidden="true">✧</span>
+          <span>Cánh Cửa <b>Thần Kì</b></span>
+        </a>
 
-      <header>
-        <h1>Cánh Cửa Thần Kì</h1>
-
-        <p>
-          Đặt tay lên cánh cửa — để định mệnh chọn nơi bạn sẽ đến
-        </p>
+        <button id="theme-toggle" class="theme-toggle" type="button" aria-label="Chuyển giao diện sáng tối" aria-pressed="false">
+          <span class="theme-sun" aria-hidden="true">☼</span>
+          <span class="theme-moon" aria-hidden="true">☾</span>
+        </button>
       </header>
 
-      <!-- Cánh cửa -->
-      <div id="doorbox">
+      <!-- Nội dung chính: lời mời bên trái, cửa ma thuật bên phải -->
+      <section class="hero-shell" id="door-intro">
+        <div class="hero-copy">
+          <div class="hero-kicker"><span></span> THE MAGIC GATE <i>·</i> TRAVEL DISCOVERY</div>
+          <h1>Cánh Cửa<br><em>Thần Kì</em></h1>
+          <div class="hero-ornament" aria-hidden="true"><span></span>✦<span></span></div>
+          <p>Mở cánh cửa, khám phá thế giới và bắt đầu chuyến hành trình của riêng bạn. Biết đâu, điểm đến tiếp theo sẽ là nơi bạn chưa từng nghĩ mình sẽ đặt chân đến.</p>
 
-        <div class="floor"></div>
-
-        <div id="tilt">
-
-          <div id="door">
-
-            <!-- Cổng sáng -->
-            <div class="portal">
-
-              <div class="swirl"></div>
-
-              <div id="mcircle"></div>
-
-              <div id="pscene"></div>
-
-              <div class="pglow"></div>
-
-            </div>
-
-            <!-- Khung cửa -->
-            <img
-              class="fimg"
-              src="assets/door-frame.webp"
-              alt=""
-              draggable="false"
-            >
-
-            <!-- Hai cánh cửa -->
-            <div class="leaves">
-
-              <div class="leaf l"></div>
-
-              <div class="leaf r"></div>
-
-            </div>
-
-          </div>
-
+          <!-- Giữ nguyên ID open để chức năng random cũ tiếp tục hoạt động -->
+          <button id="open" type="button" class="open-journey">
+            <span class="open-dice" aria-hidden="true">⚄</span>
+            <span>Đưa tôi đi bất ngờ</span>
+            <span class="open-arrow" aria-hidden="true">→</span>
+          </button>
+          <div class="hero-hint"><span class="hint-star">✧</span> Mỗi lần mở cửa · Một điểm đến ngẫu nhiên · Một hành trình mới</div>
         </div>
 
-      </div>
+        <!-- Cánh cửa: giữ nguyên toàn bộ cấu trúc và ID gốc -->
+        <div class="door-stage" aria-label="Cánh cửa ma thuật">
+          <div class="door-aura" aria-hidden="true"></div>
+          <div id="doorbox">
+            <div class="floor"></div>
+            <div id="tilt">
+              <div id="door">
+                <div class="portal">
+                  <div class="swirl"></div>
+                  <div id="mcircle"></div>
+                  <div id="pscene"></div>
+                  <div class="pglow"></div>
+                </div>
+                <img class="fimg" src="assets/door-frame.webp" alt="Khung cánh cửa ma thuật" draggable="false">
+                <div class="leaves">
+                  <div class="leaf l"></div>
+                  <div class="leaf r"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="door-caption"><span></span> THE GATE TO EVERYWHERE <span></span></div>
+        </div>
+      </section>
 
-      <!-- Nút mở cửa -->
-      <button id="open" type="button">
-        ✦ Mở cửa ✦
-      </button>
-
-      <div class="hint">
-        Mỗi lần tải lại trang là một cánh cửa khác
-      </div>
-
+      <!-- Các điểm đến nổi bật -->
+      <section class="featured-destinations" id="featured-destinations" aria-label="Một vài điểm đến nổi bật">
+        <div class="featured-heading"><span aria-hidden="true">✧</span> Những điểm đến đang chờ bạn</div>
+        <div class="featured-list">
+          <div class="featured-card card-dalat"><span class="featured-card-art" aria-hidden="true">🏞</span><span class="featured-card-name">Đà Lạt</span><span class="featured-card-meta">VIỆT NAM</span></div>
+          <div class="featured-card card-paris"><span class="featured-card-art" aria-hidden="true">🗼</span><span class="featured-card-name">Paris</span><span class="featured-card-meta">PHÁP</span></div>
+          <div class="featured-card card-tokyo"><span class="featured-card-art" aria-hidden="true">🌆</span><span class="featured-card-name">Tokyo</span><span class="featured-card-meta">NHẬT BẢN</span></div>
+          <div class="featured-card card-switzerland"><span class="featured-card-art" aria-hidden="true">🏔</span><span class="featured-card-name">Thụy Sĩ</span><span class="featured-card-meta">CHÂU ÂU</span></div>
+          <div class="featured-card card-danang"><span class="featured-card-art" aria-hidden="true">🌊</span><span class="featured-card-name">Đà Nẵng</span><span class="featured-card-meta">VIỆT NAM</span></div>
+        </div>
+        <div class="featured-side-note">Explore the world <span>✧</span></div>
+      </section>
     </main>
   </div>
-
 
   <!-- =========================================
        2. HIỆU ỨNG HẠT SÁNG
   ========================================== -->
   <canvas id="fx"></canvas>
 
-
   <!-- =========================================
        3. TRANG HIỂN THỊ ĐIỂM ĐẾN
+       Giữ nguyên cấu trúc và ID gốc
   ========================================== -->
   <section id="dest">
-
     <div id="dscene"></div>
-
     <div class="shade"></div>
-
     <div class="card">
-
       <small>Điểm đến bí ẩn đã mở ra</small>
-
       <h2 id="dn"></h2>
-
       <b id="dc"></b>
-
       <p id="dd"></p>
-
       <div class="chips" id="dch"></div>
-
-      <!-- Mở sách du lịch -->
-      <button id="guide-open" type="button">
-        ✧ Mở cuốn sách du lịch
-      </button>
-
-      <!-- Mở cánh cửa khác -->
-      <button id="again" type="button">
-        ↺ Mở cánh cửa khác
-      </button>
-
+      <button id="guide-open" type="button">✧ Mở cuốn sách du lịch</button>
+      <button id="again" type="button">↺ Mở cánh cửa khác</button>
     </div>
-
   </section>
-
 
   <!-- =========================================
        4. CUỐN SÁCH DU LỊCH
-       Mỗi trang tương ứng một địa điểm
+       Giữ nguyên đầy đủ cấu trúc từ bản gốc
   ========================================== -->
-  <section
-    id="travel-book"
-    class="travel-book-overlay"
-    aria-hidden="true"
-  >
+  <section id="travel-book" class="travel-book-overlay" aria-hidden="true">
+    <div class="travel-book-backdrop" data-book-dismiss></div>
 
-    <!-- Nền tối phía sau sách -->
-    <div
-      class="travel-book-backdrop"
-      data-book-dismiss
-    ></div>
-
-    <!-- Khung sách -->
-    <div
-      class="travel-book-dialog"
-      role="dialog"
-      aria-modal="true"
-      aria-labelledby="guide-title"
-    >
-
-      <!-- Thanh tiêu đề -->
+    <div class="travel-book-dialog" role="dialog" aria-modal="true" aria-labelledby="guide-title">
       <header class="book-toolbar">
-
         <div class="book-brand">
-
           <span class="book-brand-mark">✦</span>
-
           <div>
             <small>THE MAGIC ATLAS</small>
             <span>Cẩm nang du lịch</span>
           </div>
-
         </div>
-
-        <div class="book-toolbar-note">
-          Mỗi trang là một điểm đến
-        </div>
-
-        <!-- Đóng sách -->
-        <button
-          id="guide-close"
-          class="book-close"
-          type="button"
-          aria-label="Đóng cẩm nang"
-        >
-          ✕
-        </button>
-
+        <div class="book-toolbar-note">Mỗi trang là một điểm đến</div>
+        <button id="guide-close" class="book-close" type="button" aria-label="Đóng cẩm nang">✕</button>
       </header>
 
-
-      <!-- Khu vực đọc sách -->
       <div class="book-reader">
+        <button id="book-prev" class="book-arrow" type="button" aria-label="Trang trước">‹</button>
 
-        <!-- Trang trước -->
-        <button
-          id="book-prev"
-          class="book-arrow"
-          type="button"
-          aria-label="Trang trước"
-        >
-          ‹
-        </button>
-
-
-        <!-- Nội dung một trang sách -->
-        <article
-          id="book-page"
-          class="book-page"
-          aria-live="polite"
-        >
-
-          <!-- Số trang và danh mục -->
+        <article id="book-page" class="book-page" aria-live="polite">
           <div class="book-page-topline">
-
-            <span id="book-page-number">
-              TRANG 01
-            </span>
-
-            <span id="book-category">
-              ĐIỂM ĐẾN
-            </span>
-
+            <span id="book-page-number">TRANG 01</span>
+            <span id="book-category">ĐIỂM ĐẾN</span>
           </div>
 
-
-          <!-- Bố cục ảnh và nội dung -->
           <div class="book-page-layout">
-
-            <!-- Hình ảnh địa điểm -->
             <figure class="book-photo-frame">
-
-              <img
-                id="book-image"
-                src=""
-                alt=""
-                draggable="false"
-                hidden
-              >
-
-              <!-- Hiện khi chưa tìm thấy ảnh -->
-              <div
-                id="book-image-placeholder"
-                class="book-image-placeholder"
-              >
-
+              <img id="book-image" src="" alt="" draggable="false" hidden>
+              <div id="book-image-placeholder" class="book-image-placeholder">
                 <span class="placeholder-star">✧</span>
-
-                <strong id="book-placeholder-title">
-                  Ảnh điểm đến
-                </strong>
-
-                <small id="book-placeholder-path">
-                  Chèn ảnh của bạn vào thư mục Camnagdulich
-                </small>
-
+                <strong id="book-placeholder-title">Ảnh điểm đến</strong>
+                <small id="book-placeholder-path">Chèn ảnh của bạn vào thư mục Camnagdulich</small>
               </div>
-
-              <figcaption id="book-image-caption">
-                ẢNH TƯ LIỆU ĐIỂM ĐẾN
-              </figcaption>
-
+              <figcaption id="book-image-caption">ẢNH TƯ LIỆU ĐIỂM ĐẾN</figcaption>
             </figure>
 
-
-            <!-- Thông tin địa điểm -->
             <div class="book-copy">
-
-              <small class="book-copy-kicker">
-                A JOURNEY TO REMEMBER
-              </small>
-
-              <!-- Tên địa điểm -->
-              <h2 id="guide-title">
-                Tên địa điểm
-              </h2>
-
-              <!-- Mô tả ngắn -->
-              <p
-                id="book-summary"
-                class="book-summary"
-              ></p>
-
-              <div class="book-divider">
-                <span>✦</span>
-              </div>
-
-              <!-- Nội dung chi tiết -->
-              <div
-                id="guide-content"
-                class="book-guide-content"
-              ></div>
-
+              <small class="book-copy-kicker">A JOURNEY TO REMEMBER</small>
+              <h2 id="guide-title">Tên địa điểm</h2>
+              <p id="book-summary" class="book-summary"></p>
+              <div class="book-divider"><span>✦</span></div>
+              <div id="guide-content" class="book-guide-content"></div>
             </div>
-
           </div>
 
-
-          <!-- Chân trang sách -->
           <footer class="book-page-footer">
-
             <span>CÁNH CỬA THẦN KÌ</span>
-
-            <span id="book-page-footer-number">
-              01 / 88
-            </span>
-
+            <span id="book-page-footer-number">01 / 88</span>
           </footer>
-
         </article>
 
-
-        <!-- Trang tiếp theo -->
-        <button
-          id="book-next"
-          class="book-arrow"
-          type="button"
-          aria-label="Trang tiếp theo"
-        >
-          ›
-        </button>
-
+        <button id="book-next" class="book-arrow" type="button" aria-label="Trang tiếp theo">›</button>
       </div>
 
-
-      <!-- Thanh điều khiển sách -->
       <div class="book-controls">
-
-        <!-- Vị trí hiện tại -->
-        <span id="book-location-counter">
-          01 / 88 địa điểm
-        </span>
-
-        <!-- Thanh tiến trình -->
-        <div
-          class="book-progress"
-          aria-hidden="true"
-        >
-          <span id="book-progress-fill"></span>
-        </div>
-
-        <!-- Trở về trang đầu -->
-        <button
-          id="book-first"
-          type="button"
-        >
-          ↶ Về trang đầu
-        </button>
-
+        <span id="book-location-counter">01 / 88 địa điểm</span>
+        <div class="book-progress" aria-hidden="true"><span id="book-progress-fill"></span></div>
+        <button id="book-first" type="button">↶ Về trang đầu</button>
       </div>
 
-
-      <!-- Hướng dẫn ảnh -->
       <p class="book-image-help">
-        Ảnh được lấy theo tên file trong thư mục
-        <code>Camnagdulich/</code>.
-        Có thể đổi đường dẫn ảnh trong
-        <code>js/travel-book.js</code>.
+        Ảnh được lấy theo tên file trong thư mục <code>Camnagdulich/</code>.
+        Có thể đổi đường dẫn ảnh trong <code>js/travel-book.js</code>.
       </p>
-
     </div>
-
   </section>
-
 
   <!-- =========================================
        5. HIỆU ỨNG CHỚP SÁNG CHUYỂN CẢNH
   ========================================== -->
   <div id="flash"></div>
 
-
   <!-- =========================================
        6. JAVASCRIPT
-       Thứ tự nạp file rất quan trọng
+       Giữ thứ tự nạp các file gốc
   ========================================== -->
-
-  <!-- Các chức năng gốc -->
   <script src="js/utils.js"></script>
-
   <script src="js/destinations.js"></script>
-
   <script src="js/travel-guide.js"></script>
-
   <script src="js/scene.js"></script>
-
   <script src="js/particles.js"></script>
-
   <script src="js/circle.js"></script>
-
   <script src="js/door.js"></script>
-
-  <!-- Chức năng cuốn sách mới -->
   <script src="js/travel-book.js"></script>
-
-  <!-- File khởi tạo trang phải được nạp cuối -->
+  <script src="js/home-redesign.js"></script>
   <script src="js/main.js"></script>
-
 </body>
 </html>

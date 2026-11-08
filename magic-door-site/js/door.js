@@ -70,7 +70,7 @@ function safeScene(d) {
 }
 
 /** Chờ ảnh tối đa bao lâu (ms). Quá lâu thì dùng phong cảnh vẽ sẵn để trang không bị kẹt. */
-const PHOTO_TIMEOUT = 15000;
+const PHOTO_TIMEOUT = 5000;
 
 /** Tải TRỌN ảnh của điểm đến: thử lần lượt các đường dẫn rồi chờ ảnh giải mã xong.
  *  Trả về đường dẫn ảnh dùng được, hoặc null nếu điểm đến không có ảnh / không tải được. */
@@ -156,10 +156,10 @@ function fillDestination(d, photoUrl) {
 
 /** Thời lượng từng giai đoạn (ms) — chỉnh số ở đây để nhanh / chậm hơn. */
 const TIMELINE = {
-  circle: 1800,   // thời gian tối thiểu vòng tròn quay (vẽ xong) trước khi bắt đầu lao vào cổng
-  dive: 2300,     // thời gian lao vào cổng (khớp transition của #world.dive trong base.css)
-  arrive: 1000,   // từ lúc chớp sáng đến lúc hiện màn hình điểm đến
-  settle: 100,    // tan chớp sáng
+  circle: 1200,
+  dive: 1600,
+  arrive: 700,
+  settle: 100,
 };
 
 /** Bấm "Mở cửa": mở cánh → vòng tròn phép thuật quay → (ảnh tải xong) vừa quay vừa
